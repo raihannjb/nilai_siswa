@@ -60,7 +60,7 @@ if (!$koneksi) {
     <select class="form-select" id="floatingSelectGrid" name="role">
         <option selected>--Pilih Role--</option>
         <option value="Admin">Admin</option>
-        <option value="Pegawai">Pegawai</option>
+        <option value="Guru">Guru</option>
       </select>
       </div>
     <div style="margin-top:10px; margin-left:18.3%;" class="position-absolute bottom-85 end-60">
