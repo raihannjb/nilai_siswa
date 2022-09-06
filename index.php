@@ -1,17 +1,3 @@
-<?php
-session_start();
-$host     = "localhost";
-$user     = "root";
-$pass     = "";
-$db       = "nilai_siswa";
-
-$koneksi  = mysqli_connect($host, $user, $pass, $db);
-if (!$koneksi) {
-  die("Koneksi ke database gagal!");
-}
-?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -46,39 +32,28 @@ if (!$koneksi) {
     LOGIN <br>
     <img src="img/smapulbig.svg" alt="" width="253" height="255" class="logo">
   </div>
-  <form action = "index.php" method = "post">
+  <form method="POST" action="cek_login.php">
     <div class="form">
       <label style="font-weight:500;" for="exampleInputUsername1">Username:</label>
-      <input type="text" class="form-control" name="Username" placeholder="Masukkan Username" required="">
+      <input type="text" class="form-control" name="username" placeholder="Masukkan Username" required="">
     </div>
     <div style="margin-top:10px;" class="form">
       <label style="font-weight:500;" for="exampleInputPassword1">Password:</label>
-      <input type="password" class="form-control" name="Pass" id="exampleInputPassword1" placeholder="Password" required="">
+      <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password" required="">
     </div>
     <label style="font-weight:500; margin-top:10px;" for="floatingSelectGrid">Pilih Role:</label>
     <div class="form-label-group">
-    <select class="form-select" id="floatingSelectGrid" name="role">
+    <select class="form-select" id="floatingSelectGrid" name="level">
         <option selected>--Pilih Role--</option>
         <option value="Admin">Admin</option>
         <option value="Guru">Guru</option>
       </select>
       </div>
     <div style="margin-top:10px; margin-left:18.3%;" class="position-absolute bottom-85 end-60">
-      <button style="font-weight:500;" type="submit" name="login" value="Login" class="btn btn-danger">Log In</button>
+      <button style="font-weight:500;" class="btn btn-danger" type="submit">Log In</button>
     </div>
   </form>
-
-  <?php
-    if (isset($POST['login'])){
-      $Username = $_POST['Username'];
-    }
-  
-  
-  ?>
-
-
-
-  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
 </body>
 
 </html>
