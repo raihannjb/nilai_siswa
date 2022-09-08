@@ -41,21 +41,15 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
   <div class="sidebar">
   <header><?= $_SESSION['nama_lengkap'] ?></header>
   <ul>
-    <li><a href="dashboard_guru.php">Dashboard</a></li>
-    <li><a href="predikat.php">Predikat</a></li>
-    <li><a href="penilaian.php">Penilaian</a></li>
-    <li><a href="riwayat_nilai.php">Riwayat Nilai</a></li>
+    <li><a href="dashboard_admin.php">Dashboard</a></li>
+    <li><a href="guru.php">Guru</a></li>
+    <li><a href="siswa.php">Siswa</a></li>
+    <li><a href="kelas.php">Kelas</a></li>
+    <li><a href="mata_pelajaran.php">Mata Pelajaran</a></li>
   </ul>
   </div>
   <div class="dashboard">
-  <div class="col-sm-9">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Selamat Datang, <b><?= $_SESSION['nama_lengkap'] ?></b>!</h5><br>
-        <p class="card-text">Anda berhasil login dan memasuki halaman dashboard.<br><br></p>
-      </div>
-    </div>
-  </div>
+   
   </div>
   <script type="text/javascript" src="../js/bootstrap.min.js"></script>
 </body>

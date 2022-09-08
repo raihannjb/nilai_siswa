@@ -48,14 +48,7 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
   </ul>
   </div>
   <div class="dashboard">
-  <div class="col-sm-9">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Selamat Datang, <b><?= $_SESSION['nama_lengkap'] ?></b>!</h5><br>
-        <p class="card-text">Anda berhasil login dan memasuki halaman dashboard.<br><br></p>
-      </div>
-    </div>
-  </div>
+   
   </div>
   <script type="text/javascript" src="../js/bootstrap.min.js"></script>
 </body>
