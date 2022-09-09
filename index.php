@@ -32,7 +32,7 @@
     LOGIN <br>
     <img src="img/smapulbig.svg" alt="" width="253" height="255" class="logo">
   </div>
-  <form method="POST" action="cek_login.php">
+  <form style="margin:auto; width: 25%; padding: 10px;" method="POST" action="cek_login.php">
     <div class="form">
       <label style="font-weight:500;" for="exampleInputUsername1">Username:</label>
       <input type="text" class="form-control" name="username" placeholder="Masukkan Username" required="">
@@ -43,17 +43,17 @@
     </div>
     <label style="font-weight:500; margin-top:10px;" for="floatingSelectGrid">Pilih Role:</label>
     <div class="form-label-group">
-    <select class="form-select" id="floatingSelectGrid" name="level">
+      <select class="form-select" id="floatingSelectGrid" name="level">
         <option selected>--Pilih Role--</option>
         <option value="Admin">Admin</option>
         <option value="Guru">Guru</option>
       </select>
-      </div>
+    </div>
     <div style="margin-top:10px; margin-left:18.3%;" class="position-absolute bottom-85 end-60">
       <button style="font-weight:500;" class="btn btn-danger" type="submit">Log In</button>
     </div>
   </form>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
 </body>
 
 </html>

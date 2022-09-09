@@ -48,7 +48,7 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
     <li><a href="mata_pelajaran.php">Mata Pelajaran</a></li>
   </ul>
   </div>
-  <div class="dashboard">
+  <div class="content">
   <div class="row">
   <div class="col-sm-9">
     <div class="card">

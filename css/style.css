@@ -23,12 +23,6 @@ letter-spacing: 5px;
     --bs-body-bg: #B2AD83;
 }
 
-form {
-  margin: auto;
-  width: 25%;
-  padding: 10px;
-}
-
 .btn-login {
  text-align: center;
 }
@@ -77,8 +71,8 @@ ul li:hover a{
   padding-left: 50px;
 }
 
-.dashboard{
-  margin-top: 60px;
+.content{
+  margin-top: 69px;
   margin-left: 20%;
 }
 
@@ -90,3 +84,14 @@ ul li:hover a{
   font-size: 24px;
 }
 
+.card {
+  width: 90%;
+}
+
+.col-sm-10 {
+  width: 100%;
+}
+
+.col-sm-2.col-form-label {
+  width:100%;
+}
