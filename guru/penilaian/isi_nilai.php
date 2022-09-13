@@ -58,9 +58,9 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
-  <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="../css/style.css">
+  <link rel="stylesheet" type="text/css" href="../../css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="../../css/style.css">
 
   <link href="https://fonts.googleapis.com/css2?family=Jost:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -73,7 +73,7 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
     <nav class="navbar bg-white fixed-top">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
-          <img src="../img/smapul.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
+          <img src="../../img/smapul.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
           SMK Sumatra 40
         </a>
         <a class="logout" style="margin-right:90px; text-decoration:none; color:black; font-size:20px; font-weight:300;" href="../logout.php">
@@ -85,19 +85,17 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
   <div class="sidebar">
     <header><?= $_SESSION['nama_lengkap'] ?></header>
     <ul>
-      <li><a href="dashboard_admin.php">Dashboard</a></li>
-      <li><a href="guru.php">Guru</a></li>
-      <li><a href="siswa.php">Siswa</a></li>
-      <li><a href="kelas.php">Kelas</a></li>
-      <li><a href="mata_pelajaran.php">Mata Pelajaran</a></li>
+    <li><a href="../dashboard_guru.php">Dashboard</a></li>
+    <li><a href="../predikat.php">Predikat</a></li>
+    <li><a href="../penilaian.php">Penilaian</a></li>
+    <li><a href="../riwayat_nilai.php">Riwayat Nilai</a></li>
     </ul>
   </div>
   <div class="content">
     <!-- untuk memasukkan dan mengedit data -->
     <div class="card">
       <div class="card-header">
-        Tambah/Edit Mata Pelajaran
-        <a style="margin-left:60%;" href="#" class="btn btn-danger">Edit Mata Pelajaran</a>
+        Tambah Nilai
       </div>
       <div class="card-body">
         <?php
@@ -132,23 +130,43 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
 
         <form action="" method="POST">
           <div class="mb-3 row">
-            <label for="kode" class="col-sm-2 col-form-label">Kode Mata Pelajaran</label>
+          <label for="kelas" class="col-sm-2 col-form-label">Kelas</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="kode" name="kode" value="<?php echo $kode ?>">
+            <select class="form-control" name="kelas" id="kelas">
+                <option value="">-- Pilih Kelas --</option>
+              </select>
             </div>
           </div>
 
 
           <div class="mb-3 row">
-            <label for="nama" class="col-sm-2 col-form-label">Nama Mata Pelajaran</label>
+          <label for="mapel" class="col-sm-2 col-form-label">Pilih Mata Pelajaran</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="nama" name="nama" value="<?php echo $nama ?>">
+            <select class="form-control" name="mapel" id="mapel">
+                <option value="">-- Pilih Mata Pelajaran --</option>
+              </select>
+            </div>
+          </div>
+
+
+          <div class="mb-3 row">
+            <label for="alamat" class="col-sm-2 col-form-label">Tahun Ajaran</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="tahun" name="tahun" value="<?php echo $tahun ?>">
+            </div>
+          </div>
+
+
+          <div class="mb-3 row">
+            <label for="semester" class="col-sm-2 col-form-label">Semester</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="semester" name="semester" value="<?php echo $tahun ?>">
             </div>
           </div>
 
 
           <div class="col-12">
-            <input type="submit" name="simpan" value="Simpan" class="btn btn-danger" />
+            <a href="penilaian/isi_nilai.php" class="btn btn-danger">Selanjutnya</a>
           </div>
 
         </form>
@@ -157,15 +175,6 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
 
     <br><br>
 
-    <!-- untuk mengeluarkan data -->
-    <div class="card">
-      <div class="card-header">
-        Data Mata Pelajaran
-      </div>
-      <div class="card-body">
-
-      </div>
-    </div>
     <script type="text/javascript" src="../js/bootstrap.min.js"></script>
 </body>
 

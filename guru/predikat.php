@@ -1,11 +1,55 @@
 <?php
+$host       = "localhost";
+$user       = "root";
+$pass       = "";
+$db         = "nilai_siswa";
+
+$koneksi    = mysqli_connect($host, $user, $pass, $db);
+if (!$koneksi) {
+  die("Tidak bisa terhubung ke database");
+}
+
+$kode             = "";
+$nama             = "";
+$alamat           = "";
+$error            = "";
+$sukses           = "";
+
+
+if (isset($_POST['simpan'])) {
+  $kode             = $_POST['kode'];
+  $nama             = $_POST['nama'];
+  $alamat           = $_POST['alamat'];
+
+
+
+
+  if ($kode && $nama && $alamat) {
+    $sql1 = "insert into guru (kode,nama,alamat) values ('$kode', '$nama' ,'$alamat')";
+    $q1   = mysqli_query($koneksi, $sql1);
+    if ($q1) {
+      $sukses     = "Berhasil memasukkan data";
+    } else {
+      $error      = "Gagal memasukkan data";
+    }
+  } else {
+    $error = "Silahkan masukkan semua data!!";
+  }
+}
+
+?>
+
+
+
+
+
+<?php
 session_start();
 if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
   echo "<script>alert('Mff, untuk mengakses halaman ini anda harus login terlebih dahulu');document.location='index.php'</script>";
 }
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,17 +83,104 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
     </nav>
   </div>
   <div class="sidebar">
-  <header><?= $_SESSION['nama_lengkap'] ?></header>
-  <ul>
+    <header><?= $_SESSION['nama_lengkap'] ?></header>
+    <ul>
     <li><a href="dashboard_guru.php">Dashboard</a></li>
     <li><a href="predikat.php">Predikat</a></li>
     <li><a href="penilaian.php">Penilaian</a></li>
     <li><a href="riwayat_nilai.php">Riwayat Nilai</a></li>
-  </ul>
+    </ul>
   </div>
-  <div class="dashboard">
-   
-  </div>
-  <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+  <div class="content">
+    <!-- untuk memasukkan dan mengedit data -->
+    <div class="card">
+      <div class="card-header">
+        Tambah/Edit Predikat
+        <a style="margin-left:70%;" href="#" class="btn btn-danger">Edit Predikat</a>
+      </div>
+      <div class="card-body">
+        <?php
+        if ($error) {
+        ?>
+          <div class="alert alert-danger" role="alert">
+            <?php echo $error ?>
+          </div>
+        <?php
+        }
+        ?>
+
+        <!-- <?php
+              if ($duplikat) {
+              ?>
+          <div class="alert alert-danger" role="alert">
+            <?php echo $duplikat ?>
+          </div>
+        <?php
+              }
+        ?> -->
+
+        <?php
+        if ($sukses) {
+        ?>
+          <div class="alert alert-success" role="alert">
+            <?php echo $sukses ?>
+          </div>
+        <?php
+        }
+        ?>
+
+        <form action="" method="POST">
+          <div class="mb-3 row">
+            <label for="nilai_atas" class="col-sm-2 col-form-label">Nilai Atas</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="nilai_atas" name="nilai_atas" value="<?php echo $nilai_atas ?>">
+            </div>
+          </div>
+
+
+          <div class="mb-3 row">
+            <label for="nilai_bawah" class="col-sm-2 col-form-label">Nilai Bawah</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="nilai_bawah" name="nilai_bawah" value="<?php echo $nilai_bawah ?>">
+            </div>
+          </div>
+
+
+          <div class="mb-3 row">
+            <label for="huruf" class="col-sm-2 col-form-label">Huruf</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="huruf" name="huruf" value="<?php echo $huruf ?>">
+            </div>
+          </div>
+
+
+          <div class="mb-3 row">
+            <label for="predikat" class="col-sm-2 col-form-label">Predikat</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="predikat" name="predikat" value="<?php echo $predikat ?>">
+            </div>
+          </div>
+
+          <div class="col-12">
+            <input type="submit" name="simpan" value="Simpan" class="btn btn-danger" />
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+    <br><br>
+
+    <!-- untuk mengeluarkan data -->
+    <div class="card">
+      <div class="card-header">
+        Data Predikat
+      </div>
+      <div class="card-body">
+
+      </div>
+    </div>
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
 </body>
+
 </html>

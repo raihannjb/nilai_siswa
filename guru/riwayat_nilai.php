@@ -1,11 +1,55 @@
 <?php
+$host       = "localhost";
+$user       = "root";
+$pass       = "";
+$db         = "nilai_siswa";
+
+$koneksi    = mysqli_connect($host, $user, $pass, $db);
+if (!$koneksi) {
+  die("Tidak bisa terhubung ke database");
+}
+
+$kode             = "";
+$nama             = "";
+$alamat           = "";
+$error            = "";
+$sukses           = "";
+
+
+if (isset($_POST['simpan'])) {
+  $kode             = $_POST['kode'];
+  $nama             = $_POST['nama'];
+  $alamat           = $_POST['alamat'];
+
+
+
+
+  if ($kode && $nama && $alamat) {
+    $sql1 = "insert into guru (kode,nama,alamat) values ('$kode', '$nama' ,'$alamat')";
+    $q1   = mysqli_query($koneksi, $sql1);
+    if ($q1) {
+      $sukses     = "Berhasil memasukkan data";
+    } else {
+      $error      = "Gagal memasukkan data";
+    }
+  } else {
+    $error = "Silahkan masukkan semua data!!";
+  }
+}
+
+?>
+
+
+
+
+
+<?php
 session_start();
 if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
   echo "<script>alert('Mff, untuk mengakses halaman ini anda harus login terlebih dahulu');document.location='index.php'</script>";
 }
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,17 +83,25 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
     </nav>
   </div>
   <div class="sidebar">
-  <header><?= $_SESSION['nama_lengkap'] ?></header>
-  <ul>
+    <header><?= $_SESSION['nama_lengkap'] ?></header>
+    <ul>
     <li><a href="dashboard_guru.php">Dashboard</a></li>
     <li><a href="predikat.php">Predikat</a></li>
     <li><a href="penilaian.php">Penilaian</a></li>
     <li><a href="riwayat_nilai.php">Riwayat Nilai</a></li>
-  </ul>
+    </ul>
   </div>
-  <div class="dashboard">
-   
-  </div>
-  <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+  <div class="content">
+    <!-- untuk mengeluarkan data -->
+    <div class="card">
+      <div class="card-header">
+        Riwayat Nilai
+      </div>
+      <div class="card-body">
+
+      </div>
+    </div>
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
 </body>
+
 </html>

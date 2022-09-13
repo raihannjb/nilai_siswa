@@ -1,11 +1,55 @@
 <?php
+$host       = "localhost";
+$user       = "root";
+$pass       = "";
+$db         = "nilai_siswa";
+
+$koneksi    = mysqli_connect($host, $user, $pass, $db);
+if (!$koneksi) {
+  die("Tidak bisa terhubung ke database");
+}
+
+$kode             = "";
+$nama             = "";
+$alamat           = "";
+$error            = "";
+$sukses           = "";
+
+
+if (isset($_POST['simpan'])) {
+  $kode             = $_POST['kode'];
+  $nama             = $_POST['nama'];
+  $alamat           = $_POST['alamat'];
+
+
+
+
+  if ($kode && $nama && $alamat) {
+    $sql1 = "insert into guru (kode,nama,alamat) values ('$kode', '$nama' ,'$alamat')";
+    $q1   = mysqli_query($koneksi, $sql1);
+    if ($q1) {
+      $sukses     = "Berhasil memasukkan data";
+    } else {
+      $error      = "Gagal memasukkan data";
+    }
+  } else {
+    $error = "Silahkan masukkan semua data!!";
+  }
+}
+
+?>
+
+
+
+
+
+<?php
 session_start();
 if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
   echo "<script>alert('Mff, untuk mengakses halaman ini anda harus login terlebih dahulu');document.location='index.php'</script>";
 }
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,17 +83,99 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
     </nav>
   </div>
   <div class="sidebar">
-  <header><?= $_SESSION['nama_lengkap'] ?></header>
-  <ul>
+    <header><?= $_SESSION['nama_lengkap'] ?></header>
+    <ul>
     <li><a href="dashboard_guru.php">Dashboard</a></li>
     <li><a href="predikat.php">Predikat</a></li>
     <li><a href="penilaian.php">Penilaian</a></li>
     <li><a href="riwayat_nilai.php">Riwayat Nilai</a></li>
-  </ul>
+    </ul>
   </div>
-  <div class="dashboard">
-   
-  </div>
-  <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+  <div class="content">
+    <!-- untuk memasukkan dan mengedit data -->
+    <div class="card">
+      <div class="card-header">
+        Tambah Nilai
+      </div>
+      <div class="card-body">
+        <?php
+        if ($error) {
+        ?>
+          <div class="alert alert-danger" role="alert">
+            <?php echo $error ?>
+          </div>
+        <?php
+        }
+        ?>
+
+        <!-- <?php
+              if ($duplikat) {
+              ?>
+          <div class="alert alert-danger" role="alert">
+            <?php echo $duplikat ?>
+          </div>
+        <?php
+              }
+        ?> -->
+
+        <?php
+        if ($sukses) {
+        ?>
+          <div class="alert alert-success" role="alert">
+            <?php echo $sukses ?>
+          </div>
+        <?php
+        }
+        ?>
+
+        <form action="" method="POST">
+          <div class="mb-3 row">
+          <label for="kelas" class="col-sm-2 col-form-label">Kelas</label>
+            <div class="col-sm-10">
+            <select class="form-control" name="kelas" id="kelas">
+                <option value="">-- Pilih Kelas --</option>
+              </select>
+            </div>
+          </div>
+
+
+          <div class="mb-3 row">
+          <label for="mapel" class="col-sm-2 col-form-label">Pilih Mata Pelajaran</label>
+            <div class="col-sm-10">
+            <select class="form-control" name="mapel" id="mapel">
+                <option value="">-- Pilih Mata Pelajaran --</option>
+              </select>
+            </div>
+          </div>
+
+
+          <div class="mb-3 row">
+            <label for="alamat" class="col-sm-2 col-form-label">Tahun Ajaran</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="tahun" name="tahun" value="<?php echo $tahun ?>">
+            </div>
+          </div>
+
+
+          <div class="mb-3 row">
+            <label for="semester" class="col-sm-2 col-form-label">Semester</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="semester" name="semester" value="<?php echo $tahun ?>">
+            </div>
+          </div>
+
+
+          <div class="col-12">
+            <a href="penilaian/isi_nilai.php" class="btn btn-danger">Selanjutnya</a>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+    <br><br>
+
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
 </body>
+
 </html>
