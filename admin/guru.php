@@ -1,16 +1,40 @@
 <?php
- $kode      ="";
- $nama      ="";
- $alamat    ="";
- $mapel     ="";
+$host       = "localhost";
+$user       = "root";
+$pass       = "";
+$db         = "nilai_siswa";
 
-if(isset($_POST['submit'])){
-  $kode     = $_POST['kode'];
-  $nama     = $_POST['nama'];
-  $alamat   = $_POST['alamat'];
-  $mapel    = $_POST['mapel'];
+$koneksi    = mysqli_connect($host, $user, $pass, $db);
+if (!$koneksi) {
+  die("Tidak bisa terhubung ke database");
+}
+
+$kode             = "";
+$nama             = "";
+$alamat           = "";
+$error            = "";
+$sukses           = "";
 
 
+if (isset($_POST['simpan'])) {
+  $kode             = $_POST['kode'];
+  $nama             = $_POST['nama'];
+  $alamat           = $_POST['alamat'];
+
+
+
+
+  if ($kode && $nama && $alamat) {
+    $sql1 = "insert into guru (kode,nama,alamat) values ('$kode', '$nama' ,'$alamat')";
+    $q1   = mysqli_query($koneksi, $sql1);
+    if ($q1) {
+      $sukses     = "Berhasil memasukkan data";
+    } else {
+      $error      = "Gagal memasukkan data";
+    }
+  } else {
+    $error = "Silahkan masukkan semua data!!";
+  }
 }
 
 ?>
@@ -26,7 +50,6 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
 }
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -77,11 +100,41 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
         <a style="margin-left:75%;" href="#" class="btn btn-danger">Edit Guru</a>
       </div>
       <div class="card-body">
+        <?php
+        if ($error) {
+        ?>
+          <div class="alert alert-danger" role="alert">
+            <?php echo $error ?>
+          </div>
+        <?php
+        }
+        ?>
+
+        <!-- <?php
+              if ($duplikat) {
+              ?>
+          <div class="alert alert-danger" role="alert">
+            <?php echo $duplikat ?>
+          </div>
+        <?php
+              }
+        ?> -->
+
+        <?php
+        if ($sukses) {
+        ?>
+          <div class="alert alert-success" role="alert">
+            <?php echo $sukses ?>
+          </div>
+        <?php
+        }
+        ?>
+
         <form action="" method="POST">
           <div class="mb-3 row">
-            <label for="kode" class="col-sm-2 col-form-label">Kode</label>
+            <label for="kode" class="col-sm-2 col-form-label">NIP</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="kode" nama="kode" value="<?php echo $kode ?>">
+              <input type="text" class="form-control" id="kode" name="kode" value="<?php echo $kode ?>">
             </div>
           </div>
 
@@ -101,18 +154,11 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
             </div>
           </div>
 
-          <div class="mb-3 row">
-            <label for="mapel" class="col-sm-2 col-form-label">Mapel</label>
-            <div class="col-sm-10">
-            <select class="form-control" id="mapel">
-            <option value="">- Pilih Mapel -</option>
-            <option value="ppl">PPL</option>
-            <option value="pbo">PBO</option>
-            </select>
-            </div>
-          </div>
+
+
+
           <div class="col-12">
-            <input type="submit" name="simpan" value="Simpan" class="btn btn-danger"/>
+            <input type="submit" name="simpan" value="Simpan" class="btn btn-danger" />
           </div>
 
         </form>
@@ -127,7 +173,7 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
         Data Guru
       </div>
       <div class="card-body">
-      
+
       </div>
     </div>
     <script type="text/javascript" src="../js/bootstrap.min.js"></script>
