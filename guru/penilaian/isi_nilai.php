@@ -76,7 +76,7 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
           <img src="../../img/smapul.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
           SMK Sumatra 40
         </a>
-        <a class="logout" style="margin-right:90px; text-decoration:none; color:black; font-size:20px; font-weight:300;" href="../logout.php">
+        <a class="logout" style="margin-right:90px; text-decoration:none; color:black; font-size:20px; font-weight:300;" href="../../logout.php">
           LOGOUT
         </a>
       </div>
@@ -98,78 +98,31 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
         Tambah Nilai
       </div>
       <div class="card-body">
-        <?php
-        if ($error) {
-        ?>
-          <div class="alert alert-danger" role="alert">
-            <?php echo $error ?>
-          </div>
-        <?php
-        }
-        ?>
-
-        <!-- <?php
-              if ($duplikat) {
-              ?>
-          <div class="alert alert-danger" role="alert">
-            <?php echo $duplikat ?>
-          </div>
-        <?php
-              }
-        ?> -->
-
-        <?php
-        if ($sukses) {
-        ?>
-          <div class="alert alert-success" role="alert">
-            <?php echo $sukses ?>
-          </div>
-        <?php
-        }
-        ?>
-
-        <form action="" method="POST">
-          <div class="mb-3 row">
-          <label for="kelas" class="col-sm-2 col-form-label">Kelas</label>
-            <div class="col-sm-10">
-            <select class="form-control" name="kelas" id="kelas">
-                <option value="">-- Pilih Kelas --</option>
-              </select>
-            </div>
-          </div>
-
-
-          <div class="mb-3 row">
-          <label for="mapel" class="col-sm-2 col-form-label">Pilih Mata Pelajaran</label>
-            <div class="col-sm-10">
-            <select class="form-control" name="mapel" id="mapel">
-                <option value="">-- Pilih Mata Pelajaran --</option>
-              </select>
-            </div>
-          </div>
-
-
-          <div class="mb-3 row">
-            <label for="alamat" class="col-sm-2 col-form-label">Tahun Ajaran</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="tahun" name="tahun" value="<?php echo $tahun ?>">
-            </div>
-          </div>
-
-
-          <div class="mb-3 row">
-            <label for="semester" class="col-sm-2 col-form-label">Semester</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="semester" name="semester" value="<?php echo $tahun ?>">
-            </div>
-          </div>
-
-
-          <div class="col-12">
-            <a href="penilaian/isi_nilai.php" class="btn btn-danger">Selanjutnya</a>
-          </div>
-
-        </form>
+      <table border="0" width="100%" style="padding-left: 2px; padding-right: 13px;">
+          <tbody>
+            <tr>
+              <td width="45%" valign="top" class="textt">Nama Kelas</td>
+                <td width="2%">:</td>
+                <td></td>
+            </tr>
+          <tr>
+              <td class="textt">Nama Mata Pelajaran</td>
+                <td>:</td>
+                <td></td>
+            </tr>
+          <tr>
+              <td class="textt">Tahun Ajaran</td>
+                <td>:</td>
+                <td></td>
+            </tr>
+          <tr>
+              <td class="textt">Semester</td>
+                <td>:</td>
+                <td></td>
+            </tr>
+          
+        </tbody></table>
+        
       </div>
     </div>
 

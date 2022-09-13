@@ -108,15 +108,7 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
         }
         ?>
 
-        <!-- <?php
-              if ($duplikat) {
-              ?>
-          <div class="alert alert-danger" role="alert">
-            <?php echo $duplikat ?>
-          </div>
-        <?php
-              }
-        ?> -->
+       
 
         <?php
         if ($sukses) {
