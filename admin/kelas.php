@@ -96,8 +96,7 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
     <!-- untuk memasukkan dan mengedit data -->
     <div class="card">
       <div class="card-header">
-        Tambah/Edit Kelas
-        <a style="margin-left:75%;" href="#" class="btn btn-danger">Edit Kelas</a>
+        Tambah Kelas
       </div>
       <div class="card-body">
         <?php
@@ -144,6 +143,7 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
             <div class="col-sm-10">
               <select class="form-control" name="guru" id="guru">
                 <option value="">-- Pilih Guru --</option>
+                <option value=""></option>
               </select>
             </div>
           </div>
