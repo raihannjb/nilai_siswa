@@ -15,8 +15,37 @@ $alamat           = "";
 $error            = "";
 $sukses           = "";
 
+if (isset($_GET['op'])) {
+  $op = $_GET['op'];
+} else {
+  $op = "";
+}
+if($op == 'delete'){
+    $id           = $_GET['id'];
+    $sql1         = "delete from guru where id = '$id'";
+    $q1           = mysqli_query($koneksi,$sql1);
+    if($q1){
+      $sukses = "Berhasil menghapus data";
+    }else{
+      $error  = "Gagal menghapus data";
+    }
+}
+if ($op == 'edit') {
+  $id     = $_GET['id'];
+  $sql1   = "select * from guru where id = '$id'";
+  $q1     = mysqli_query($koneksi, $sql1);
+  $r1     = mysqli_fetch_array($q1);
+  $kode   = $r1['kode'];
+  $nama   = $r1['nama'];
+  $alamat = $r1['alamat'];
 
-if (isset($_POST['simpan'])) {
+  if ($kode == '') {
+    $error = "Data tidak ditemukan";
+  }
+}
+
+
+if (isset($_POST['simpan'])) { //create
   $kode             = $_POST['kode'];
   $nama             = $_POST['nama'];
   $alamat           = $_POST['alamat'];
@@ -25,12 +54,22 @@ if (isset($_POST['simpan'])) {
 
 
   if ($kode && $nama && $alamat) {
-    $sql1 = "insert into guru (kode,nama,alamat) values ('$kode', '$nama' ,'$alamat')";
-    $q1   = mysqli_query($koneksi, $sql1);
-    if ($q1) {
-      $sukses     = "Berhasil memasukkan data";
-    } else {
-      $error      = "Gagal memasukkan data";
+    if ($op == 'edit') { //update
+      $sql1   = "update guru set kode = '$kode',nama='$nama',alamat = '$alamat' where id = '$id'";
+      $q1     = mysqli_query($koneksi, $sql1);
+      if ($q1) {
+        $sukses = "Data berhasil diperbarui";
+      } else {
+        $error  = "Data gagal diupdate";
+      }
+    } else { //insert
+      $sql1 = "insert into guru (kode,nama,alamat) values ('$kode', '$nama' ,'$alamat')";
+      $q1   = mysqli_query($koneksi, $sql1);
+      if ($q1) {
+        $sukses     = "Berhasil memasukkan data";
+      } else {
+        $error      = "Gagal memasukkan data";
+      }
     }
   } else {
     $error = "Silahkan masukkan semua data!!";
@@ -96,8 +135,7 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
     <!-- untuk memasukkan dan mengedit data -->
     <div class="card">
       <div class="card-header">
-        Tambah/Edit Guru
-        <a style="margin-left:75%;" href="#" class="btn btn-danger">Edit Guru</a>
+        Tambah Guru
       </div>
       <div class="card-body">
         <?php
@@ -107,10 +145,11 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
             <?php echo $error ?>
           </div>
         <?php
+        
         }
         ?>
 
-      
+
 
         <?php
         if ($sukses) {
@@ -165,7 +204,44 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
         Data Guru
       </div>
       <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">NIP</th>
+              <th scope="col">Nama</th>
+              <th scope="col">Alamat</th>
+              <th scope="col">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+            $sql2   = "select * from guru order by id desc";
+            $q2     = mysqli_query($koneksi, $sql2);
+            $urut   = 1;
+            while ($r2 = mysqli_fetch_array($q2)) {
+              $id         = $r2['id'];
+              $kode       = $r2['kode'];
+              $nama       = $r2['nama'];
+              $alamat     = $r2['alamat'];
 
+            ?>
+              <tr>
+                <th scope="row"><?php echo $urut++ ?></th>
+                <td scope="row"><?php echo $kode ?></td>
+                <td scope="row"><?php echo $nama ?></td>
+                <td scope="row"><?php echo $alamat ?></td>
+                <td scope="row">
+                  <a href="guru.php?op=edit&id=<?php echo $id ?>"><button type="button" class="btn btn-danger">Edit</button></a>
+                  <a href="guru.php?op=delete&id=<?php echo $id ?>" onclick="return confirm('Yakin mau hapus data?')"><button type="button" class="btn btn-danger">Hapus</button></a>
+                </td>
+              </tr>
+            <?php
+            }
+            ?>
+          </tbody>
+
+        </table>
       </div>
     </div>
     <script type="text/javascript" src="../js/bootstrap.min.js"></script>

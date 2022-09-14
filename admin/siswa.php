@@ -96,8 +96,7 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
     <!-- untuk memasukkan dan mengedit data -->
     <div class="card">
       <div class="card-header">
-        Tambah/Edit Siswa
-        <a style="margin-left:75%;" href="#" class="btn btn-danger">Edit Siswa</a>
+        Tambah Siswa
       </div>
       <div class="card-body">
         <?php

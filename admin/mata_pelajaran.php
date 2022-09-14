@@ -9,23 +9,21 @@ if (!$koneksi) {
   die("Tidak bisa terhubung ke database");
 }
 
-$kode             = "";
-$nama             = "";
-$alamat           = "";
-$error            = "";
-$sukses           = "";
+$kode_mapel             = "";
+$nama_mapel             = "";
+$error                  = "";
+$sukses                 = "";
 
 
 if (isset($_POST['simpan'])) {
-  $kode             = $_POST['kode'];
-  $nama             = $_POST['nama'];
-  $alamat           = $_POST['alamat'];
+  $kode_mapel           = $_POST['kode_mapel'];
+  $nama_mapel           = $_POST['nama_mapel'];
 
 
 
 
-  if ($kode && $nama && $alamat) {
-    $sql1 = "insert into guru (kode,nama,alamat) values ('$kode', '$nama' ,'$alamat')";
+  if ($kode_mapel && $nama_mapel) {
+    $sql1 = "insert into mapel (kode_mapel,nama_mapel) values ('$kode_mapel', '$nama_mapel')";
     $q1   = mysqli_query($koneksi, $sql1);
     if ($q1) {
       $sukses     = "Berhasil memasukkan data";
@@ -96,8 +94,7 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
     <!-- untuk memasukkan dan mengedit data -->
     <div class="card">
       <div class="card-header">
-        Tambah/Edit Mata Pelajaran
-        <a style="margin-left:60%;" href="#" class="btn btn-danger">Edit Mata Pelajaran</a>
+        Tambah Mata Pelajaran
       </div>
       <div class="card-body">
         <?php
@@ -110,7 +107,7 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
         }
         ?>
 
-       
+
 
         <?php
         if ($sukses) {
@@ -124,17 +121,17 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
 
         <form action="" method="POST">
           <div class="mb-3 row">
-            <label for="kode" class="col-sm-2 col-form-label">Kode Mata Pelajaran</label>
+            <label for="kode_mapel" class="col-sm-2 col-form-label">Kode Mata Pelajaran</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="kode" name="kode" value="<?php echo $kode ?>">
+              <input type="text" class="form-control" id="kode_mapel" name="kode_mapel" value="<?php echo $kode_mapel ?>">
             </div>
           </div>
 
 
           <div class="mb-3 row">
-            <label for="nama" class="col-sm-2 col-form-label">Nama Mata Pelajaran</label>
+            <label for="nama_mapel" class="col-sm-2 col-form-label">Nama Mata Pelajaran</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="nama" name="nama" value="<?php echo $nama ?>">
+              <input type="text" class="form-control" id="nama_mapel" name="nama_mapel" value="<?php echo $nama_mapel ?>">
             </div>
           </div>
 
