@@ -9,28 +9,65 @@ if (!$koneksi) {
   die("Tidak bisa terhubung ke database");
 }
 
-$kode             = "";
-$nama             = "";
-$alamat           = "";
-$error            = "";
-$sukses           = "";
+$kode_kelas             = "";
+$nama_kelas             = "";
+$error                  = "";
+$sukses                 = "";
 
 
-if (isset($_POST['simpan'])) {
-  $kode             = $_POST['kode'];
-  $nama             = $_POST['nama'];
-  $alamat           = $_POST['alamat'];
+if (isset($_GET['op'])) {
+  $op = $_GET['op'];
+} else {
+  $op = "";
+}
+if($op == 'delete'){
+    $id           = $_GET['id'];
+    $sql1         = "delete from kelas where id = '$id'";
+    $q1           = mysqli_query($koneksi,$sql1);
+    if($q1){
+      $sukses = "Berhasil menghapus data";
+    }else{
+      $error  = "Gagal menghapus data";
+    }
+}
+if ($op == 'edit') {
+  $id           = $_GET['id'];
+  $sql1         = "select * from kelas where id = '$id'";
+  $q1           = mysqli_query($koneksi, $sql1);
+  $r1           = mysqli_fetch_array($q1);
+  $kode_kelas   = $r1['kode_kelas'];
+  $nama_kelas   = $r1['nama_kelas'];
+
+  if ($kode_kelas == '') {
+    $error = "Data tidak ditemukan";
+  }
+}
+
+
+if (isset($_POST['simpan'])) { //create
+  $kode_kelas             = $_POST['kode_kelas'];
+  $nama_kelas             = $_POST['nama_kelas'];
 
 
 
 
-  if ($kode && $nama && $alamat) {
-    $sql1 = "insert into guru (kode,nama,alamat) values ('$kode', '$nama' ,'$alamat')";
-    $q1   = mysqli_query($koneksi, $sql1);
-    if ($q1) {
-      $sukses     = "Berhasil memasukkan data";
-    } else {
-      $error      = "Gagal memasukkan data";
+  if ($kode_kelas && $nama_kelas) {
+    if ($op == 'edit') { //update
+      $sql1   = "update kelas set kode_kelas = '$kode_kelas',nama_kelas='$nama_kelas' where id = '$id'";
+      $q1     = mysqli_query($koneksi, $sql1);
+      if ($q1) {
+        $sukses = "Data berhasil diperbarui";
+      } else {
+        $error  = "Data gagal diupdate";
+      }
+    } else { //insert
+      $sql1 = "insert into kelas (kode_kelas,nama_kelas) values ('$kode_kelas', '$nama_kelas')";
+      $q1   = mysqli_query($koneksi, $sql1);
+      if ($q1) {
+        $sukses     = "Berhasil memasukkan data";
+      } else {
+        $error      = "Gagal memasukkan data";
+      }
     }
   } else {
     $error = "Silahkan masukkan semua data!!";
@@ -49,6 +86,7 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
   echo "<script>alert('Mff, untuk mengakses halaman ini anda harus login terlebih dahulu');document.location='index.php'</script>";
 }
 
+$guru = mysqli_query($koneksi, "SELECT * FROM guru");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -124,17 +162,17 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
 
         <form action="" method="POST">
           <div class="mb-3 row">
-            <label for="kode" class="col-sm-2 col-form-label">Kode Kelas</label>
+            <label for="kode_kelas" class="col-sm-2 col-form-label">Kode Kelas</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="kode" name="kode" value="<?php echo $kode ?>">
+              <input type="text" class="form-control" id="kode_kelas" name="kode_kelas" value="<?php echo $kode_kelas ?>">
             </div>
           </div>
 
 
           <div class="mb-3 row">
-            <label for="nama" class="col-sm-2 col-form-label">Nama</label>
+            <label for="nama_kelas" class="col-sm-2 col-form-label">Nama</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="nama" name="nama" value="<?php echo $nama ?>">
+              <input type="text" class="form-control" id="nama_kelas" name="nama_kelas" value="<?php echo $nama_kelas ?>">
             </div>
           </div>
 
@@ -144,7 +182,15 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
             <div class="col-sm-10">
               <select class="form-control" name="guru" id="guru">
                 <option value="">-- Pilih Guru --</option>
-                <option value=""></option>
+                <?php 
+                while($row = mysqli_fetch_array($guru)){
+                ?>
+                <option value=""><?php echo $row["nama"]?></option>
+                <?php 
+                }
+                ?>  
+                
+                
               </select>
             </div>
           </div>
@@ -168,7 +214,43 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
         Data Kelas
       </div>
       <div class="card-body">
+      <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Kode Kelas</th>
+              <th scope="col">Nama Kelas</th>
+              <th scope="col">Wali Kelas</th>
+              <th scope="col">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+            $sql2   = "select * from kelas order by id desc";
+            $q2     = mysqli_query($koneksi, $sql2);
+            $urut   = 1;
+            while ($r2 = mysqli_fetch_array($q2)) {
+              $id                 = $r2['id'];
+              $kode_kelas         = $r2['kode_kelas'];
+              $nama_kelas         = $r2['nama_kelas'];
 
+            ?>
+              <tr>
+                <th scope="row"><?php echo $urut++ ?></th>
+                <td scope="row"><?php echo $kode_kelas ?></td>
+                <td scope="row"><?php echo $nama_kelas ?></td>
+                <td scope="row"><?php echo $guru ?></td>
+                <td scope="row">
+                  <a href="kelas.php?op=edit&id=<?php echo $id ?>"><button type="button" class="btn btn-danger">Edit</button></a>
+                  <a href="kelas.php?op=delete&id=<?php echo $id ?>" onclick="return confirm('Yakin mau hapus data?')"><button type="button" class="btn btn-danger">Hapus</button></a>
+                </td>
+              </tr>
+            <?php
+            }
+            ?>
+          </tbody>
+
+        </table>
       </div>
     </div>
     <script type="text/javascript" src="../js/bootstrap.min.js"></script>
