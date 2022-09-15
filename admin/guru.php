@@ -136,6 +136,7 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
     <div class="card">
       <div class="card-header">
         Tambah Guru
+        <a style="margin-left:80%;"href="guru.php" class="btn btn-secondary">Kembali</a>
       </div>
       <div class="card-body">
         <?php
@@ -192,6 +193,7 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
             <input type="submit" name="simpan" value="Simpan" class="btn btn-danger" />
           </div>
 
+  
         </form>
       </div>
     </div>

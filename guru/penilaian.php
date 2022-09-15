@@ -86,7 +86,6 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
     <header><?= $_SESSION['nama_lengkap'] ?></header>
     <ul>
     <li><a href="dashboard_guru.php">Dashboard</a></li>
-    <li><a href="predikat.php">Predikat</a></li>
     <li><a href="penilaian.php">Penilaian</a></li>
     <li><a href="riwayat_nilai.php">Riwayat Nilai</a></li>
     </ul>
@@ -96,6 +95,7 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
     <div class="card">
       <div class="card-header">
         Tambah Nilai
+        <a style="margin-left:80%;"href="penilaian.php" class="btn btn-secondary">Kembali</a>
       </div>
       <div class="card-body">
         <?php

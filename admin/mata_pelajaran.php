@@ -15,20 +15,59 @@ $error                  = "";
 $sukses                 = "";
 
 
-if (isset($_POST['simpan'])) {
-  $kode_mapel           = $_POST['kode_mapel'];
-  $nama_mapel           = $_POST['nama_mapel'];
+if (isset($_GET['op'])) {
+  $op = $_GET['op'];
+} else {
+  $op = "";
+}
+if($op == 'delete'){
+    $id           = $_GET['id'];
+    $sql1         = "delete from mapel where id = '$id'";
+    $q1           = mysqli_query($koneksi,$sql1);
+    if($q1){
+      $sukses = "Berhasil menghapus data";
+    }else{
+      $error  = "Gagal menghapus data";
+    }
+}
+if ($op == 'edit') {
+  $id           = $_GET['id'];
+  $sql1         = "select * from mapel where id = '$id'";
+  $q1           = mysqli_query($koneksi, $sql1);
+  $r1           = mysqli_fetch_array($q1);
+  $kode_mapel   = $r1['kode_mapel'];
+  $nama_mapel   = $r1['nama_mapel'];
+
+  if ($kode_mapel == '') {
+    $error = "Data tidak ditemukan";
+  }
+}
+
+
+if (isset($_POST['simpan'])) { //create
+  $kode_mapel             = $_POST['kode_mapel'];
+  $nama_mapel             = $_POST['nama_mapel'];
 
 
 
 
   if ($kode_mapel && $nama_mapel) {
-    $sql1 = "insert into mapel (kode_mapel,nama_mapel) values ('$kode_mapel', '$nama_mapel')";
-    $q1   = mysqli_query($koneksi, $sql1);
-    if ($q1) {
-      $sukses     = "Berhasil memasukkan data";
-    } else {
-      $error      = "Gagal memasukkan data";
+    if ($op == 'edit') { //update
+      $sql1   = "update mapel set kode_mapel = '$kode_mapel',nama_mapel='$nama_mapel' where id = '$id'";
+      $q1     = mysqli_query($koneksi, $sql1);
+      if ($q1) {
+        $sukses = "Data berhasil diperbarui";
+      } else {
+        $error  = "Data gagal diupdate";
+      }
+    } else { //insert
+      $sql1 = "insert into mapel (kode_mapel,nama_mapel) values ('$kode_mapel', '$nama_mapel')";
+      $q1   = mysqli_query($koneksi, $sql1);
+      if ($q1) {
+        $sukses     = "Berhasil memasukkan data";
+      } else {
+        $error      = "Gagal memasukkan data";
+      }
     }
   } else {
     $error = "Silahkan masukkan semua data!!";
@@ -95,6 +134,7 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
     <div class="card">
       <div class="card-header">
         Tambah Mata Pelajaran
+        <a style="margin-left:73%;"href="mata_pelajaran.php" class="btn btn-secondary">Kembali</a>
       </div>
       <div class="card-body">
         <?php
@@ -138,6 +178,7 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
 
           <div class="col-12">
             <input type="submit" name="simpan" value="Simpan" class="btn btn-danger" />
+            <a href="mata_pelajaran.php" class="btn btn-danger">Kembali</a>
           </div>
 
         </form>
@@ -152,7 +193,41 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
         Data Mata Pelajaran
       </div>
       <div class="card-body">
+      <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Kode Mata Pelajaran</th>
+              <th scope="col">Nama Mata Pelajaran</th>
+              <th scope="col">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+            $sql2   = "select * from mapel order by id desc";
+            $q2     = mysqli_query($koneksi, $sql2);
+            $urut   = 1;
+            while ($r2 = mysqli_fetch_array($q2)) {
+              $id               = $r2['id'];
+              $kode_mapel       = $r2['kode_mapel'];
+              $nama_mapel       = $r2['nama_mapel'];
 
+            ?>
+              <tr>
+                <th scope="row"><?php echo $urut++ ?></th>
+                <td scope="row"><?php echo $kode_mapel ?></td>
+                <td scope="row"><?php echo $nama_mapel ?></td>
+                <td scope="row">
+                  <a href="mata_pelajaran.php?op=edit&id=<?php echo $id ?>"><button type="button" class="btn btn-danger">Edit</button></a>
+                  <a href="mata_pelajaran.php?op=delete&id=<?php echo $id ?>" onclick="return confirm('Yakin mau hapus data?')"><button type="button" class="btn btn-danger">Hapus</button></a>
+                </td>
+              </tr>
+            <?php
+            }
+            ?>
+          </tbody>
+
+        </table>
       </div>
     </div>
     <script type="text/javascript" src="../js/bootstrap.min.js"></script>

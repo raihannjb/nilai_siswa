@@ -97,6 +97,7 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
     <div class="card">
       <div class="card-header">
         Tambah Siswa
+        <a style="margin-left:80%;"href="siswa.php" class="btn btn-secondary">Kembali</a>
       </div>
       <div class="card-body">
         <?php
