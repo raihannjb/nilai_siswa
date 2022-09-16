@@ -47,13 +47,14 @@ if ($op == 'edit') {
 if (isset($_POST['simpan'])) { //create
   $kode_kelas             = $_POST['kode_kelas'];
   $nama_kelas             = $_POST['nama_kelas'];
+  $guru                   = $_POST['guru'];
 
 
 
 
   if ($kode_kelas && $nama_kelas) {
     if ($op == 'edit') { //update
-      $sql1   = "update kelas set kode_kelas = '$kode_kelas',nama_kelas='$nama_kelas' where id = '$id'";
+      $sql1   = "update kelas set kode_kelas = '$kode_kelas',nama_kelas='$nama_kelas',guru='$guru' where id = '$id'";
       $q1     = mysqli_query($koneksi, $sql1);
       if ($q1) {
         $sukses = "Data berhasil diperbarui";
@@ -61,7 +62,7 @@ if (isset($_POST['simpan'])) { //create
         $error  = "Data gagal diupdate";
       }
     } else { //insert
-      $sql1 = "insert into kelas (kode_kelas,nama_kelas) values ('$kode_kelas', '$nama_kelas')";
+      $sql1 = "insert into kelas (kode_kelas,nama_kelas,guru) values ('$kode_kelas', '$nama_kelas', '$guru')";
       $q1   = mysqli_query($koneksi, $sql1);
       if ($q1) {
         $sukses     = "Berhasil memasukkan data";
@@ -239,7 +240,20 @@ $guru = mysqli_query($koneksi, "SELECT * FROM guru");
                 <th scope="row"><?php echo $urut++ ?></th>
                 <td scope="row"><?php echo $kode_kelas ?></td>
                 <td scope="row"><?php echo $nama_kelas ?></td>
-                <td scope="row"><?php echo $guru ?></td>
+
+                <?php
+            $sql2   = "select nama from guru";
+            $q2     = mysqli_query($koneksi, $sql2);
+            $urut   = 1;
+            while ($r2 = mysqli_fetch_array($q2)) {
+              $guru                 = $r2['nama'];
+
+            ?> 
+                <td scope="row"><?php echo $guru?></td>
+                <?php
+            }
+            ?>   
+                
                 <td scope="row">
                   <a href="kelas.php?op=edit&id=<?php echo $id ?>"><button type="button" class="btn btn-danger">Edit</button></a>
                   <a href="kelas.php?op=delete&id=<?php echo $id ?>" onclick="return confirm('Yakin mau hapus data?')"><button type="button" class="btn btn-danger">Hapus</button></a>
