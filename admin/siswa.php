@@ -88,6 +88,8 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
   echo "<script>alert('Mff, untuk mengakses halaman ini anda harus login terlebih dahulu');document.location='index.php'</script>";
 }
 
+$kelas = mysqli_query($koneksi, "SELECT * FROM kelas");
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -182,6 +184,13 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
             <div class="col-sm-10">
             <select class="form-control" name="kelas" id="kelas">
                 <option value="">-- Pilih Kelas --</option>
+                <?php 
+                while($row = mysqli_fetch_array($kelas)){
+                ?>
+                <option value=""><?php echo $row["nama_kelas"]?></option>
+                <?php 
+                }
+                ?>
               </select>
             </div>
           </div>
@@ -219,6 +228,7 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
               <th scope="col">#</th>
               <th scope="col">NIS</th>
               <th scope="col">Nama Siswa</th>
+              <th scope="col">Kelas</th>
               <th scope="col">Alamat</th>
               <th scope="col">Aksi</th>
             </tr>
@@ -239,7 +249,24 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
                 <th scope="row"><?php echo $urut++ ?></th>
                 <td scope="row"><?php echo $nis ?></td>
                 <td scope="row"><?php echo $nama_siswa ?></td>
+                <?php
+                $sql2   = "select nama_kelas from kelas";
+                $q2     = mysqli_query($koneksi, $sql2);
+                $urut   = 1;
+                while ($r2 = mysqli_fetch_array($q2)) {
+                  $kelas                 = $r2['nama_kelas'];
+
+                ?>
+                  <td scope="row"><?php echo $kelas ?></td>
+                <?php
+                }
+                ?>
                 <td scope="row"><?php echo $alamat_siswa ?></td>
+                
+                
+                
+                
+
                 <td scope="row">
                   <a href="siswa.php?op=edit&id=<?php echo $id ?>"><button type="button" class="btn btn-danger">Edit</button></a>
                   <a href="siswa.php?op=delete&id=<?php echo $id ?>" onclick="return confirm('Yakin mau hapus data?')"><button type="button" class="btn btn-danger">Hapus</button></a>

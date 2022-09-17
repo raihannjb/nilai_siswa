@@ -20,15 +20,15 @@ if (isset($_GET['op'])) {
 } else {
   $op = "";
 }
-if($op == 'delete'){
-    $id           = $_GET['id'];
-    $sql1         = "delete from kelas where id = '$id'";
-    $q1           = mysqli_query($koneksi,$sql1);
-    if($q1){
-      $sukses = "Berhasil menghapus data";
-    }else{
-      $error  = "Gagal menghapus data";
-    }
+if ($op == 'delete') {
+  $id           = $_GET['id'];
+  $sql1         = "delete from kelas where id = '$id'";
+  $q1           = mysqli_query($koneksi, $sql1);
+  if ($q1) {
+    $sukses = "Berhasil menghapus data";
+  } else {
+    $error  = "Gagal menghapus data";
+  }
 }
 if ($op == 'edit') {
   $id           = $_GET['id'];
@@ -61,10 +61,6 @@ if (isset($_POST['simpan'])) { //create
       } else {
         $error  = "Data gagal diupdate";
       }
-
-      
-
-      
     } else { //insert
       $sql1 = "insert into kelas (kode_kelas,nama_kelas,guru) values ('$kode_kelas', '$nama_kelas', '$guru')";
       $q1   = mysqli_query($koneksi, $sql1);
@@ -140,7 +136,7 @@ $guru = mysqli_query($koneksi, "SELECT * FROM guru");
     <div class="card">
       <div class="card-header">
         Tambah Kelas
-        <a style="margin-left:80%;"href="kelas.php" class="btn btn-secondary">Kembali</a>
+        <a style="margin-left:80%;" href="kelas.php" class="btn btn-secondary">Kembali</a>
       </div>
       <div class="card-body">
         <?php
@@ -153,7 +149,7 @@ $guru = mysqli_query($koneksi, "SELECT * FROM guru");
         }
         ?>
 
-      
+
 
         <?php
         if ($sukses) {
@@ -187,15 +183,15 @@ $guru = mysqli_query($koneksi, "SELECT * FROM guru");
             <div class="col-sm-10">
               <select class="form-control" name="guru" id="guru">
                 <option value="">-- Pilih Guru --</option>
-                <?php 
-                while($row = mysqli_fetch_array($guru)){
+                <?php
+                while ($row = mysqli_fetch_array($guru)) {
                 ?>
-                <option value=""><?php echo $row["nama"]?></option>
-                <?php 
+                  <option value=""><?php echo $row["nama"] ?></option>
+                <?php
                 }
-                ?>  
-                
-                
+                ?>
+
+
               </select>
             </div>
           </div>
@@ -219,7 +215,7 @@ $guru = mysqli_query($koneksi, "SELECT * FROM guru");
         Data Kelas
       </div>
       <div class="card-body">
-      <table class="table">
+        <table class="table">
           <thead>
             <tr>
               <th scope="col">#</th>
@@ -246,18 +242,18 @@ $guru = mysqli_query($koneksi, "SELECT * FROM guru");
                 <td scope="row"><?php echo $nama_kelas ?></td>
 
                 <?php
-            $sql2   = "select nama from guru";
-            $q2     = mysqli_query($koneksi, $sql2);
-            $urut   = 1;
-            while ($r2 = mysqli_fetch_array($q2)) {
-              $guru                 = $r2['nama'];
+                $sql2   = "select nama from guru";
+                $q2     = mysqli_query($koneksi, $sql2);
+                $urut   = 1;
+                while ($r2 = mysqli_fetch_array($q2)) {
+                  $guru                 = $r2['nama'];
 
-            ?> 
-                <td scope="row"><?php echo $guru?></td>
+                ?>
+                  <td scope="row"><?php echo $guru ?></td>
                 <?php
-            }
-            ?>   
-                
+                }
+                ?>
+
                 <td scope="row">
                   <a href="kelas.php?op=edit&id=<?php echo $id ?>"><button type="button" class="btn btn-danger">Edit</button></a>
                   <a href="kelas.php?op=delete&id=<?php echo $id ?>" onclick="return confirm('Yakin mau hapus data?')"><button type="button" class="btn btn-danger">Hapus</button></a>
