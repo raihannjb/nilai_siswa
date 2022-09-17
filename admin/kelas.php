@@ -54,13 +54,17 @@ if (isset($_POST['simpan'])) { //create
 
   if ($kode_kelas && $nama_kelas) {
     if ($op == 'edit') { //update
-      $sql1   = "update kelas set kode_kelas = '$kode_kelas',nama_kelas='$nama_kelas',guru='$guru' where id = '$id'";
+      $sql1   = "update kelas set kode_kelas = '$kode_kelas',nama_kelas='$nama_kelas' where id = '$id'";
       $q1     = mysqli_query($koneksi, $sql1);
       if ($q1) {
         $sukses = "Data berhasil diperbarui";
       } else {
         $error  = "Data gagal diupdate";
       }
+
+      
+
+      
     } else { //insert
       $sql1 = "insert into kelas (kode_kelas,nama_kelas,guru) values ('$kode_kelas', '$nama_kelas', '$guru')";
       $q1   = mysqli_query($koneksi, $sql1);

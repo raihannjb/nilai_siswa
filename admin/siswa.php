@@ -9,28 +9,67 @@ if (!$koneksi) {
   die("Tidak bisa terhubung ke database");
 }
 
-$kode             = "";
-$nama             = "";
-$alamat           = "";
-$error            = "";
-$sukses           = "";
+$nis                    = "";
+$nama_siswa             = "";
+$alamat_siswa           = "";
+$error                  = "";
+$sukses                 = "";
+
+if (isset($_GET['op'])) {
+  $op = $_GET['op'];
+} else {
+  $op = "";
+}
+if($op == 'delete'){
+    $id           = $_GET['id'];
+    $sql1         = "delete from siswa where id = '$id'";
+    $q1           = mysqli_query($koneksi,$sql1);
+    if($q1){
+      $sukses = "Berhasil menghapus data";
+    }else{
+      $error  = "Gagal menghapus data";
+    }
+}
+if ($op == 'edit') {
+  $id                 = $_GET['id'];
+  $sql1               = "select * from siswa where id = '$id'";
+  $q1                 = mysqli_query($koneksi, $sql1);
+  $r1                 = mysqli_fetch_array($q1);
+  $nis                = $r1['nis'];
+  $nama_siswa         = $r1['nama_siswa'];
+  $alamat_siswa       = $r1['alamat_siswa'];
+
+  if ($nis == '') {
+    $error = "Data tidak ditemukan";
+  }
+}
+
 
 
 if (isset($_POST['simpan'])) {
-  $kode             = $_POST['kode'];
-  $nama             = $_POST['nama'];
-  $alamat           = $_POST['alamat'];
+  $nis                    = $_POST['nis'];
+  $nama_siswa             = $_POST['nama_siswa'];
+  $alamat_siswa           = $_POST['alamat_siswa'];
+
+  if ($nis && $nama_siswa && $alamat_siswa) {
+    if ($op == 'edit') { //update
+      $sql1   = "update siswa set nis = '$nis',nama_siswa='$nama_siswa', alamat_siswa='$alamat_siswa' where id = '$id'";
+      $q1     = mysqli_query($koneksi, $sql1);
+      if ($q1) {
+        $sukses = "Data berhasil diperbarui";
+      } else {
+        $error  = "Data gagal diupdate";
+      }
 
 
-
-
-  if ($kode && $nama && $alamat) {
-    $sql1 = "insert into guru (kode,nama,alamat) values ('$kode', '$nama' ,'$alamat')";
-    $q1   = mysqli_query($koneksi, $sql1);
-    if ($q1) {
-      $sukses     = "Berhasil memasukkan data";
-    } else {
-      $error      = "Gagal memasukkan data";
+    } else { //insert
+      $sql1 = "insert into siswa (nis,nama_siswa,alamat_siswa) values ('$nis', '$nama_siswa', '$alamat_siswa')";
+      $q1   = mysqli_query($koneksi, $sql1);
+      if ($q1) {
+        $sukses     = "Berhasil memasukkan data";
+      } else {
+        $error      = "Gagal memasukkan data";
+      }
     }
   } else {
     $error = "Silahkan masukkan semua data!!";
@@ -41,7 +80,7 @@ if (isset($_POST['simpan'])) {
 
 
 
-
+ 
 
 <?php
 session_start();
@@ -124,17 +163,17 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
 
         <form action="" method="POST">
           <div class="mb-3 row">
-            <label for="kode" class="col-sm-2 col-form-label">NIS</label>
+            <label for="nis" class="col-sm-2 col-form-label">NIS</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="kode" name="kode" value="<?php echo $kode ?>">
+              <input type="text" class="form-control" id="nis" name="nis" value="<?php echo $nis ?>">
             </div>
           </div>
 
 
           <div class="mb-3 row">
-            <label for="nama" class="col-sm-2 col-form-label">Nama</label>
+            <label for="nama_siswa" class="col-sm-2 col-form-label">Nama Siswa</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="nama" name="nama" value="<?php echo $nama ?>">
+              <input type="text" class="form-control" id="nama_siswa" name="nama_siswa" value="<?php echo $nama_siswa ?>">
             </div>
           </div>
 
@@ -149,9 +188,9 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
 
 
           <div class="mb-3 row">
-            <label for="alamat" class="col-sm-2 col-form-label">Alamat</label>
+            <label for="alamat_siswa" class="col-sm-2 col-form-label">Alamat</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="alamat" name="alamat" value="<?php echo $alamat ?>">
+              <input type="text" class="form-control" id="alamat_siswa" name="alamat_siswa" value="<?php echo $alamat_siswa ?>">
             </div>
           </div>
 
@@ -174,6 +213,44 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
         Data Siswa
       </div>
       <div class="card-body">
+      <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">NIS</th>
+              <th scope="col">Nama Siswa</th>
+              <th scope="col">Alamat</th>
+              <th scope="col">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+            $sql2   = "select * from siswa order by id desc";
+            $q2     = mysqli_query($koneksi, $sql2);
+            $urut   = 1;
+            while ($r2 = mysqli_fetch_array($q2)) {
+              $id               = $r2['id'];
+              $nis              = $r2['nis'];
+              $nama_siswa       = $r2['nama_siswa'];
+              $alamat_siswa     = $r2['alamat_siswa'];
+
+            ?>
+              <tr>
+                <th scope="row"><?php echo $urut++ ?></th>
+                <td scope="row"><?php echo $nis ?></td>
+                <td scope="row"><?php echo $nama_siswa ?></td>
+                <td scope="row"><?php echo $alamat_siswa ?></td>
+                <td scope="row">
+                  <a href="siswa.php?op=edit&id=<?php echo $id ?>"><button type="button" class="btn btn-danger">Edit</button></a>
+                  <a href="siswa.php?op=delete&id=<?php echo $id ?>" onclick="return confirm('Yakin mau hapus data?')"><button type="button" class="btn btn-danger">Hapus</button></a>
+                </td>
+              </tr>
+            <?php
+            }
+            ?>
+          </tbody>
+
+        </table>
 
       </div>
     </div>
