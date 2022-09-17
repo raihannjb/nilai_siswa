@@ -10,11 +10,18 @@ if (!$koneksi) {
 }
 
 $kode             = "";
+$tahun            = "";
+$semester         = "";
 $nama             = "";
 $alamat           = "";
 $error            = "";
 $sukses           = "";
 
+if (isset($_GET['op'])) {
+  $op = $_GET['op'];
+} else {
+  $op = "";
+}
 
 if (isset($_POST['simpan'])) {
   $kode             = $_POST['kode'];
@@ -152,13 +159,13 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
           <div class="mb-3 row">
             <label for="semester" class="col-sm-2 col-form-label">Semester</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="semester" name="semester" value="<?php echo $tahun ?>">
+              <input type="text" class="form-control" id="semester" name="semester" value="<?php echo $semester ?>">
             </div>
           </div>
 
 
           <div class="col-12">
-            <a href="penilaian/isi_nilai.php" class="btn btn-danger">Selanjutnya</a>
+          <input type="submit" href="penilaian/pilih_siswa.php" name="simpan" value="Simpan" class="btn btn-danger" />
           </div>
 
         </form>
