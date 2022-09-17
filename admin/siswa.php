@@ -31,15 +31,28 @@ if($op == 'delete'){
     }
 }
 if ($op == 'edit') {
-  $id                 = $_GET['id'];
-  $sql1               = "select * from siswa where id = '$id'";
-  $q1                 = mysqli_query($koneksi, $sql1);
-  $r1                 = mysqli_fetch_array($q1);
-  $nis                = $r1['nis'];
-  $nama_siswa         = $r1['nama_siswa'];
-  $alamat_siswa       = $r1['alamat_siswa'];
+  $id                      = $_GET['id'];
+  $sql1                    = "select * from siswa where id = '$id'";
+  $q1                      = mysqli_query($koneksi, $sql1);
+  $r1                      = mysqli_fetch_array($q1);
+  $nis                     = $r1['nis'];
+  $nama_siswa              = $r1['nama_siswa'];
+  $nama_kelas              = $r1['nama_kelas'];
+  $alamat_siswa            = $r1['alamat_siswa'];
 
   if ($nis == '') {
+    $error = "Data tidak ditemukan";
+  }
+}
+if ($op == 'edit') {
+  $id                      = $_GET['id'];
+  $sql1                    = "select * from kelas where id = '$id'";
+  $q1                      = mysqli_query($koneksi, $sql1);
+  $r1                      = mysqli_fetch_array($q1);
+  $nama_kelas              = $r1['nama_kelas'];
+
+
+  if ($id == '') {
     $error = "Data tidak ditemukan";
   }
 }
@@ -47,9 +60,10 @@ if ($op == 'edit') {
 
 
 if (isset($_POST['simpan'])) {
-  $nis                    = $_POST['nis'];
-  $nama_siswa             = $_POST['nama_siswa'];
-  $alamat_siswa           = $_POST['alamat_siswa'];
+  $nis                         = $_POST['nis'];
+  $nama_siswa                  = $_POST['nama_siswa'];
+  $alamat_siswa                = $_POST['alamat_siswa'];
+  
 
   if ($nis && $nama_siswa && $alamat_siswa) {
     if ($op == 'edit') { //update
@@ -60,9 +74,7 @@ if (isset($_POST['simpan'])) {
       } else {
         $error  = "Data gagal diupdate";
       }
-
-
-    } else { //insert
+      } else { //insert
       $sql1 = "insert into siswa (nis,nama_siswa,alamat_siswa) values ('$nis', '$nama_siswa', '$alamat_siswa')";
       $q1   = mysqli_query($koneksi, $sql1);
       if ($q1) {
@@ -74,6 +86,36 @@ if (isset($_POST['simpan'])) {
   } else {
     $error = "Silahkan masukkan semua data!!";
   }
+}
+
+//nama kelas
+if (isset($_POST['simpan'])) {
+  $nama_kelas              = $_POST['nama_kelas'];
+ 
+  
+  if ($nama_kelas) {
+    if ($op == 'edit') { //update
+      $sql1   = "update siswa set nama_kelas='$nama_kelas' where id = '$id'";
+      $q1     = mysqli_query($koneksi, $sql1);
+      if ($q1) {
+        $sukses = "Data berhasil diperbarui";
+      } else {
+        $error  = "Data gagal diupdate";
+      }
+      } else { //insert
+      $sql1 = "insert into siswa (nama_kelas) values ('$nama_kelas')";
+      $q1   = mysqli_query($koneksi, $sql1);
+      if ($q1) {
+        $sukses     = "Berhasil memasukkan data";
+      } else {
+        $error      = "Gagal memasukkan data";
+      }
+    }
+  } else {
+    $error = "Silahkan masukkan semua data!!";
+  }
+
+  
 }
 
 ?>
@@ -183,7 +225,7 @@ $kelas = mysqli_query($koneksi, "SELECT * FROM kelas");
             <label for="kelas" class="col-sm-2 col-form-label">Kelas</label>
             <div class="col-sm-10">
             <select class="form-control" name="kelas" id="kelas">
-                <option value="">-- Pilih Kelas --</option>
+                <option value="<?php echo $nama_kelas ?>">-- Pilih Kelas --</option>
                 <?php 
                 while($row = mysqli_fetch_array($kelas)){
                 ?>
