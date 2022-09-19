@@ -9,17 +9,19 @@ if (!$koneksi) {
   die("Tidak bisa terhubung ke database");
 }
 
-$kode             = "";
-$nama             = "";
-$alamat           = "";
-$error            = "";
-$sukses           = "";
+$nilai_kelas             = "";
+$nilai_mapel             = "";
+$tahun_ajaran            = "";
+$semester                = "";
+$error                   = "";
+$sukses                  = "";
 
 
 if (isset($_POST['simpan'])) {
-  $kode             = $_POST['kode'];
-  $nama             = $_POST['nama'];
-  $alamat           = $_POST['alamat'];
+  $nilai_kelas             = $_POST['nilai_kelas'];
+  $nilai_mapel             = $_POST['nilai_mapel'];
+  $tahun_ajaran            = $_POST['tahun_ajaran'];
+  $semester                = $_POST['semester'];
 
 
 

@@ -9,13 +9,14 @@ if (!$koneksi) {
   die("Tidak bisa terhubung ke database");
 }
 
-$kode             = "";
-$tahun            = "";
-$semester         = "";
-$nama             = "";
-$alamat           = "";
-$error            = "";
-$sukses           = "";
+$nilai_kelas             = "";
+$nilai_mapel             = "";
+$tahun_ajaran            = "";
+$semester                = "";
+$error                   = "";
+$sukses                  = "";
+
+
 
 if (isset($_GET['op'])) {
   $op = $_GET['op'];
@@ -23,21 +24,32 @@ if (isset($_GET['op'])) {
   $op = "";
 }
 
-if (isset($_POST['simpan'])) {
-  $kode             = $_POST['kode'];
-  $nama             = $_POST['nama'];
-  $alamat           = $_POST['alamat'];
+if (isset($_POST['selanjutnya'])) { // buat dan simpan data
+  $nilai_kelas             = $_POST['nilai_kelas'];
+  $nilai_mapel             = $_POST['nilai_mapel'];
+  $tahun_ajaran            = $_POST['tahun_ajaran'];
+  $semester                = $_POST['semester'];
 
 
 
 
-  if ($kode && $nama && $alamat) {
-    $sql1 = "insert into guru (kode,nama,alamat) values ('$kode', '$nama' ,'$alamat')";
-    $q1   = mysqli_query($koneksi, $sql1);
-    if ($q1) {
-      $sukses     = "Berhasil memasukkan data";
-    } else {
-      $error      = "Gagal memasukkan data";
+  if ($nilai_kelas && $nilai_mapel && $tahun_ajaran && $semester) {
+    if ($op == 'edit') { //update
+      $sql1   = "update penilaian set kode = '$kode',nama='$nama',alamat = '$alamat' where id = '$id'";
+      $q1     = mysqli_query($koneksi, $sql1);
+      if ($q1) {
+        $sukses = "Data berhasil diperbarui";
+      } else {
+        $error  = "Data gagal diupdate";
+      }
+    } else { //insert
+      $sql1 = "insert into penilaian (kode,nama,alamat) values ('$kode', '$nama' ,'$alamat')";
+      $q1   = mysqli_query($koneksi, $sql1);
+      if ($q1) {
+        $sukses     = "Berhasil memasukkan data";
+      } else {
+        $error      = "Gagal memasukkan data";
+      }
     }
   } else {
     $error = "Silahkan masukkan semua data!!";
@@ -45,7 +57,6 @@ if (isset($_POST['simpan'])) {
 }
 
 ?>
-
 
 
 
@@ -165,7 +176,7 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
 
 
           <div class="col-12">
-          <input type="submit" href="penilaian/pilih_siswa.php" name="simpan" value="Simpan" class="btn btn-danger" />
+          <input type="submit" name="selanjutnya" value="Selanjutnya" class="btn btn-danger" />
           </div>
 
         </form>
