@@ -137,7 +137,7 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
         <a style="margin-left:80%;"href="siswa.php" class="btn btn-secondary">Kembali</a>
       </div>
       <div class="card-body">
-        <?php
+        <?php 
         if ($error) {
         ?>
           <div class="alert alert-danger" role="alert">
@@ -147,8 +147,7 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
         }
         ?>
 
-        
-
+      
         <?php
         if ($sukses) {
         ?>
@@ -238,9 +237,9 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
             $urut   = 1;
             while ($r2 = mysqli_fetch_array($q2)) {
               $id_siswa               = $r2['id_siswa'];
-              $nis              = $r2['nis'];
-              $nama_siswa       = $r2['nama_siswa'];
-              $alamat_siswa     = $r2['alamat_siswa'];
+              $nis                    = $r2['nis'];
+              $nama_siswa             = $r2['nama_siswa'];
+              $alamat_siswa           = $r2['alamat_siswa'];
 
             ?>
               <tr>
