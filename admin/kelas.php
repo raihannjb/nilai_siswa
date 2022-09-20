@@ -47,14 +47,15 @@ if ($op == 'edit') {
 if (isset($_POST['simpan'])) { //create
   $kode_kelas             = $_POST['kode_kelas'];
   $nama_kelas             = $_POST['nama_kelas'];
-  $guru                   = $_POST['guru'];
+  $data                   = $_POST['id_guru'];
+
 
 
 
 
   if ($kode_kelas && $nama_kelas) {
     if ($op == 'edit') { //update
-      $sql1   = "update kelas set kode_kelas = '$kode_kelas',nama_kelas='$nama_kelas' where id = '$id'";
+      $sql1   = "update kelas set kode_kelas = '$kode_kelas',nama_kelas='$nama_kelas' id_guru='$data' where id = '$id'";
       $q1     = mysqli_query($koneksi, $sql1);
       if ($q1) {
         $sukses = "Data berhasil diperbarui";
@@ -62,8 +63,9 @@ if (isset($_POST['simpan'])) { //create
         $error  = "Data gagal diupdate";
       }
     } else { //insert
-      $sql1 = "insert into kelas (kode_kelas,nama_kelas,guru) values ('$kode_kelas', '$nama_kelas', '$guru')";
+      $sql1 = "insert into kelas (kode_kelas,nama_kelas,id_guru) values ('$kode_kelas', '$nama_kelas', '$data')";
       $q1   = mysqli_query($koneksi, $sql1);
+  
       if ($q1) {
         $sukses     = "Berhasil memasukkan data";
       } else {
@@ -87,7 +89,6 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
   echo "<script>alert('Mff, untuk mengakses halaman ini anda harus login terlebih dahulu');document.location='index.php'</script>";
 }
 
-$guru = mysqli_query($koneksi, "SELECT * FROM guru");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -179,19 +180,19 @@ $guru = mysqli_query($koneksi, "SELECT * FROM guru");
 
 
           <div class="mb-3 row">
-            <label for="guru" class="col-sm-2 col-form-label">Wali Kelas</label>
+            <label for="id_guru" class="col-sm-2 col-form-label">Wali Kelas</label>
             <div class="col-sm-10">
-              <select class="form-control" name="guru" id="guru">
+              <select class="form-control" name="id_guru" id="id_guru">
                 <option value="">-- Pilih Guru --</option>
                 <?php
-                while ($row = mysqli_fetch_array($guru)) {
-                ?>
-                  <option value=""><?php echo $row["nama"] ?></option>
-                <?php
-                }
-                ?>
+                 include "koneksi.php";
+                 $query = mysqli_query($koneksi,"SELECT * FROM guru") or die (mysqli_error($koneksi));
+                 while ($data = mysqli_fetch_array($query)){
+                  echo "<option value=$data[id_guru]> $data[nama]</option>";
+                 }
 
 
+                ?>
               </select>
             </div>
           </div>

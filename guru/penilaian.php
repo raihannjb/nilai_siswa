@@ -9,8 +9,8 @@ if (!$koneksi) {
   die("Tidak bisa terhubung ke database");
 }
 
-$nilai_kelas             = "";
-$nilai_mapel             = "";
+$kelas                   = "";
+$mapel                   = "";
 $tahun_ajaran            = "";
 $semester                = "";
 $error                   = "";
@@ -25,17 +25,17 @@ if (isset($_GET['op'])) {
 }
 
 if (isset($_POST['selanjutnya'])) { // buat dan simpan data
-  $nilai_kelas             = $_POST['nilai_kelas'];
-  $nilai_mapel             = $_POST['nilai_mapel'];
+  $kelas                   = $_POST['kelas'];
+  $mapel                   = $_POST['mapel'];
   $tahun_ajaran            = $_POST['tahun_ajaran'];
   $semester                = $_POST['semester'];
 
 
 
 
-  if ($nilai_kelas && $nilai_mapel && $tahun_ajaran && $semester) {
+  if ($kelas && $mapel && $tahun_ajaran && $semester) {
     if ($op == 'edit') { //update
-      $sql1   = "update penilaian set kode = '$kode',nama='$nama',alamat = '$alamat' where id = '$id'";
+      $sql1   = "update penilaian set kelas = '$kelas',mapel='$mapel',tahun_ajaran = '$tahun_ajaran',semester = '$semester' where id = '$id'";
       $q1     = mysqli_query($koneksi, $sql1);
       if ($q1) {
         $sukses = "Data berhasil diperbarui";
@@ -43,7 +43,7 @@ if (isset($_POST['selanjutnya'])) { // buat dan simpan data
         $error  = "Data gagal diupdate";
       }
     } else { //insert
-      $sql1 = "insert into penilaian (kode,nama,alamat) values ('$kode', '$nama' ,'$alamat')";
+      $sql1 = "insert into penilaian (kelas,mapel,tahun_ajaran,semester) values ('$kelas', '$mapel' ,'$tahun_ajaran', '$semester')";
       $q1   = mysqli_query($koneksi, $sql1);
       if ($q1) {
         $sukses     = "Berhasil memasukkan data";
@@ -67,6 +67,8 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
   echo "<script>alert('Mff, untuk mengakses halaman ini anda harus login terlebih dahulu');document.location='index.php'</script>";
 }
 
+$kelas = mysqli_query($koneksi, "SELECT * FROM kelas");
+$mapel = mysqli_query($koneksi, "SELECT * FROM mapel");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -144,6 +146,13 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
             <div class="col-sm-10">
             <select class="form-control" name="kelas" id="kelas">
                 <option value="">-- Pilih Kelas --</option>
+                <?php
+                while ($row = mysqli_fetch_array($kelas)) {
+                ?>
+                  <option value=""><?php echo $row["nama_kelas"] ?></option>
+                <?php
+                }
+                ?>
               </select>
             </div>
           </div>
@@ -154,15 +163,22 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
             <div class="col-sm-10">
             <select class="form-control" name="mapel" id="mapel">
                 <option value="">-- Pilih Mata Pelajaran --</option>
+                <?php
+                while ($row = mysqli_fetch_array($mapel)) {
+                ?>
+                  <option value=""><?php echo $row["nama_mapel"] ?></option>
+                <?php
+                }
+                ?>
               </select>
             </div>
           </div>
 
 
           <div class="mb-3 row">
-            <label for="alamat" class="col-sm-2 col-form-label">Tahun Ajaran</label>
+            <label for="tahun_ajaran" class="col-sm-2 col-form-label">Tahun Ajaran</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="tahun" name="tahun" value="<?php echo $tahun ?>">
+              <input type="text" class="form-control" id="tahun_ajaran" name="tahun_ajaran" value="<?php echo $tahun_ajaran ?>">
             </div>
           </div>
 

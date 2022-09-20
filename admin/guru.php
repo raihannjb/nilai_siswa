@@ -21,8 +21,8 @@ if (isset($_GET['op'])) {
   $op = "";
 }
 if($op == 'delete'){
-    $id           = $_GET['id'];
-    $sql1         = "delete from guru where id = '$id'";
+    $id_guru           = $_GET['id_guru'];
+    $sql1         = "delete from guru where id_guru = '$id_guru'";
     $q1           = mysqli_query($koneksi,$sql1);
     if($q1){
       $sukses = "Berhasil menghapus data";
@@ -31,8 +31,8 @@ if($op == 'delete'){
     }
 }
 if ($op == 'edit') {
-  $id     = $_GET['id'];
-  $sql1   = "select * from guru where id = '$id'";
+  $id_guru     = $_GET['id_guru'];
+  $sql1   = "select * from guru where id_guru = '$id_guru'";
   $q1     = mysqli_query($koneksi, $sql1);
   $r1     = mysqli_fetch_array($q1);
   $kode   = $r1['kode'];
@@ -55,7 +55,7 @@ if (isset($_POST['simpan'])) { //create
 
   if ($kode && $nama && $alamat) {
     if ($op == 'edit') { //update
-      $sql1   = "update guru set kode = '$kode',nama='$nama',alamat = '$alamat' where id = '$id'";
+      $sql1   = "update guru set kode = '$kode',nama='$nama',alamat = '$alamat' where id_guru = '$id_guru'";
       $q1     = mysqli_query($koneksi, $sql1);
       if ($q1) {
         $sukses = "Data berhasil diperbarui";
@@ -218,11 +218,11 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
           </thead>
           <tbody>
             <?php
-            $sql2   = "select * from guru order by id desc";
+            $sql2   = "select * from guru order by id_guru desc";
             $q2     = mysqli_query($koneksi, $sql2);
             $urut   = 1;
             while ($r2 = mysqli_fetch_array($q2)) {
-              $id         = $r2['id'];
+              $id_guru         = $r2['id_guru'];
               $kode       = $r2['kode'];
               $nama       = $r2['nama'];
               $alamat     = $r2['alamat'];
@@ -234,8 +234,8 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
                 <td scope="row"><?php echo $nama ?></td>
                 <td scope="row"><?php echo $alamat ?></td>
                 <td scope="row">
-                  <a href="guru.php?op=edit&id=<?php echo $id ?>"><button type="button" class="btn btn-danger">Edit</button></a>
-                  <a href="guru.php?op=delete&id=<?php echo $id ?>" onclick="return confirm('Yakin mau hapus data?')"><button type="button" class="btn btn-danger">Hapus</button></a>
+                  <a href="guru.php?op=edit&id_guru=<?php echo $id_guru ?>"><button type="button" class="btn btn-danger">Edit</button></a>
+                  <a href="guru.php?op=delete&id_guru=<?php echo $id_guru ?>" onclick="return confirm('Yakin mau hapus data?')"><button type="button" class="btn btn-danger">Hapus</button></a>
                 </td>
               </tr>
             <?php
