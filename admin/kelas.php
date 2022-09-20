@@ -21,8 +21,8 @@ if (isset($_GET['op'])) {
   $op = "";
 }
 if ($op == 'delete') {
-  $id           = $_GET['id'];
-  $sql1         = "delete from kelas where id = '$id'";
+  $id_kelas           = $_GET['id_kelas'];
+  $sql1         = "delete from kelas where id_kelas = '$id_kelas'";
   $q1           = mysqli_query($koneksi, $sql1);
   if ($q1) {
     $sukses = "Berhasil menghapus data";
@@ -31,8 +31,8 @@ if ($op == 'delete') {
   }
 }
 if ($op == 'edit') {
-  $id           = $_GET['id'];
-  $sql1         = "select * from kelas where id = '$id'";
+  $id_kelas           = $_GET['id_kelas'];
+  $sql1         = "select * from kelas where id_kelas = '$id_kelas'";
   $q1           = mysqli_query($koneksi, $sql1);
   $r1           = mysqli_fetch_array($q1);
   $kode_kelas   = $r1['kode_kelas'];
@@ -55,7 +55,7 @@ if (isset($_POST['simpan'])) { //create
 
   if ($kode_kelas && $nama_kelas) {
     if ($op == 'edit') { //update
-      $sql1   = "update kelas set kode_kelas = '$kode_kelas',nama_kelas='$nama_kelas' id_guru='$data' where id = '$id'";
+      $sql1   = "update kelas set kode_kelas = '$kode_kelas',nama_kelas='$nama_kelas', id_guru='$data' where id_kelas = '$id_kelas'";
       $q1     = mysqli_query($koneksi, $sql1);
       if ($q1) {
         $sukses = "Data berhasil diperbarui";
@@ -228,11 +228,11 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
           </thead>
           <tbody>
             <?php
-            $sql2   = "select * from kelas order by id desc";
+            $sql2   = "select * from kelas order by id_kelas desc";
             $q2     = mysqli_query($koneksi, $sql2);
             $urut   = 1;
             while ($r2 = mysqli_fetch_array($q2)) {
-              $id                 = $r2['id'];
+              $id_kelas                 = $r2['id_kelas'];
               $kode_kelas         = $r2['kode_kelas'];
               $nama_kelas         = $r2['nama_kelas'];
 
@@ -241,11 +241,19 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
                 <th scope="row"><?php echo $urut++ ?></th>
                 <td scope="row"><?php echo $kode_kelas ?></td>
                 <td scope="row"><?php echo $nama_kelas ?></td>
-                <td scope="row"><?php echo "nama" ?></td>
+                <td><?php
+                 $query = mysqli_query($koneksi,"SELECT * FROM guru") or die (mysqli_error($koneksi));
+                 while ($data = mysqli_fetch_array($query)){
+                  echo "
+                       $data[nama]";
+                 }
+
+
+                ?></td>
 
                 <td scope="row">
-                  <a href="kelas.php?op=edit&id=<?php echo $id ?>"><button type="button" class="btn btn-danger">Edit</button></a>
-                  <a href="kelas.php?op=delete&id=<?php echo $id ?>" onclick="return confirm('Yakin mau hapus data?')"><button type="button" class="btn btn-danger">Hapus</button></a>
+                  <a href="kelas.php?op=edit&id_kelas=<?php echo $id_kelas ?>"><button type="button" class="btn btn-danger">Edit</button></a>
+                  <a href="kelas.php?op=delete&id_kelas=<?php echo $id_kelas ?>" onclick="return confirm('Yakin mau hapus data?')"><button type="button" class="btn btn-danger">Hapus</button></a>
                 </td>
               </tr>
             <?php

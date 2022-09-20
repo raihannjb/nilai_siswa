@@ -21,8 +21,8 @@ if (isset($_GET['op'])) {
   $op = "";
 }
 if($op == 'delete'){
-    $id           = $_GET['id'];
-    $sql1         = "delete from siswa where id = '$id'";
+    $id_siswa           = $_GET['id_siswa'];
+    $sql1         = "delete from siswa where id_siswa = '$id_siswa'";
     $q1           = mysqli_query($koneksi,$sql1);
     if($q1){
       $sukses = "Berhasil menghapus data";
@@ -31,43 +31,30 @@ if($op == 'delete'){
     }
 }
 if ($op == 'edit') {
-  $id                      = $_GET['id'];
-  $sql1                    = "select * from siswa where id = '$id'";
+  $id_siswa                      = $_GET['id_siswa'];
+  $sql1                    = "select * from siswa where id_siswa = '$id_siswa'";
   $q1                      = mysqli_query($koneksi, $sql1);
   $r1                      = mysqli_fetch_array($q1);
   $nis                     = $r1['nis'];
   $nama_siswa              = $r1['nama_siswa'];
-  $nama_kelas              = $r1['nama_kelas'];
   $alamat_siswa            = $r1['alamat_siswa'];
 
   if ($nis == '') {
     $error = "Data tidak ditemukan";
   }
 }
-if ($op == 'edit') {
-  $id                      = $_GET['id'];
-  $sql1                    = "select * from kelas where id = '$id'";
-  $q1                      = mysqli_query($koneksi, $sql1);
-  $r1                      = mysqli_fetch_array($q1);
-  $nama_kelas              = $r1['nama_kelas'];
-
-
-  if ($id == '') {
-    $error = "Data tidak ditemukan";
-  }
-}
-
 
 
 if (isset($_POST['simpan'])) {
   $nis                         = $_POST['nis'];
   $nama_siswa                  = $_POST['nama_siswa'];
+  $data                        = $_POST['id_kelas'];
   $alamat_siswa                = $_POST['alamat_siswa'];
   
 
   if ($nis && $nama_siswa && $alamat_siswa) {
     if ($op == 'edit') { //update
-      $sql1   = "update siswa set nis = '$nis',nama_siswa='$nama_siswa', alamat_siswa='$alamat_siswa' where id = '$id'";
+      $sql1   = "update siswa set nis = '$nis',nama_siswa='$nama_siswa',id_kelas='$data',alamat_siswa='$alamat_siswa' where id_siswa = '$id_siswa'";
       $q1     = mysqli_query($koneksi, $sql1);
       if ($q1) {
         $sukses = "Data berhasil diperbarui";
@@ -75,7 +62,7 @@ if (isset($_POST['simpan'])) {
         $error  = "Data gagal diupdate";
       }
       } else { //insert
-      $sql1 = "insert into siswa (nis,nama_siswa,alamat_siswa) values ('$nis', '$nama_siswa', '$alamat_siswa')";
+      $sql1 = "insert into siswa (nis,nama_siswa,id_kelas,alamat_siswa) values ('$nis', '$nama_siswa', '$data' , '$alamat_siswa')";
       $q1   = mysqli_query($koneksi, $sql1);
       if ($q1) {
         $sukses     = "Berhasil memasukkan data";
@@ -87,37 +74,6 @@ if (isset($_POST['simpan'])) {
     $error = "Silahkan masukkan semua data!!";
   }
 }
-
-//nama kelas
-if (isset($_POST['simpan'])) {
-  $nama_kelas              = $_POST['nama_kelas'];
- 
-  
-  if ($nama_kelas) {
-    if ($op == 'edit') { //update
-      $sql1   = "update siswa set nama_kelas='$nama_kelas' where id = '$id'";
-      $q1     = mysqli_query($koneksi, $sql1);
-      if ($q1) {
-        $sukses = "Data berhasil diperbarui";
-      } else {
-        $error  = "Data gagal diupdate";
-      }
-      } else { //insert
-      $sql1 = "insert into siswa (nama_kelas) values ('$nama_kelas')";
-      $q1   = mysqli_query($koneksi, $sql1);
-      if ($q1) {
-        $sukses     = "Berhasil memasukkan data";
-      } else {
-        $error      = "Gagal memasukkan data";
-      }
-    }
-  } else {
-    $error = "Silahkan masukkan semua data!!";
-  }
-
-  
-}
-
 ?>
 
 
@@ -129,8 +85,6 @@ session_start();
 if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
   echo "<script>alert('Mff, untuk mengakses halaman ini anda harus login terlebih dahulu');document.location='index.php'</script>";
 }
-
-$kelas = mysqli_query($koneksi, "SELECT * FROM kelas");
 
 ?>
 <!DOCTYPE html>
@@ -222,16 +176,18 @@ $kelas = mysqli_query($koneksi, "SELECT * FROM kelas");
           </div>
 
           <div class="mb-3 row">
-            <label for="kelas" class="col-sm-2 col-form-label">Kelas</label>
+            <label for="id_kelas" class="col-sm-2 col-form-label">Kelas</label>
             <div class="col-sm-10">
-            <select class="form-control" name="kelas" id="kelas">
-                <option value="<?php echo $nama_kelas ?>">-- Pilih Kelas --</option>
-                <?php 
-                while($row = mysqli_fetch_array($kelas)){
-                ?>
-                <option value=""><?php echo $row["nama_kelas"]?></option>
-                <?php 
-                }
+            <select class="form-control" name="id_kelas" id="id_kelas">
+                <option value="">-- Pilih Kelas --</option>
+                <?php
+                 include "koneksi.php";
+                 $query = mysqli_query($koneksi,"SELECT * FROM kelas") or die (mysqli_error($koneksi));
+                 while ($data = mysqli_fetch_array($query)){
+                  echo "<option value=$data[id_kelas]> $data[nama_kelas]</option>";
+                 }
+
+
                 ?>
               </select>
             </div>
@@ -277,11 +233,11 @@ $kelas = mysqli_query($koneksi, "SELECT * FROM kelas");
           </thead>
           <tbody>
             <?php
-            $sql2   = "select * from siswa order by id desc";
+            $sql2   = "select * from siswa order by id_siswa desc";
             $q2     = mysqli_query($koneksi, $sql2);
             $urut   = 1;
             while ($r2 = mysqli_fetch_array($q2)) {
-              $id               = $r2['id'];
+              $id_siswa               = $r2['id_siswa'];
               $nis              = $r2['nis'];
               $nama_siswa       = $r2['nama_siswa'];
               $alamat_siswa     = $r2['alamat_siswa'];
@@ -291,18 +247,15 @@ $kelas = mysqli_query($koneksi, "SELECT * FROM kelas");
                 <th scope="row"><?php echo $urut++ ?></th>
                 <td scope="row"><?php echo $nis ?></td>
                 <td scope="row"><?php echo $nama_siswa ?></td>
-                <?php
-                $sql2   = "select nama_kelas from kelas";
-                $q2     = mysqli_query($koneksi, $sql2);
-                $urut   = 1;
-                while ($r2 = mysqli_fetch_array($q2)) {
-                  $kelas                 = $r2['nama_kelas'];
+                <td><?php
+                 $query = mysqli_query($koneksi,"SELECT * FROM kelas") or die (mysqli_error($koneksi));
+                 while ($data = mysqli_fetch_array($query)){
+                  echo "
+                       $data[nama_kelas]";
+                 }
 
-                ?>
-                  <td scope="row"><?php echo $kelas ?></td>
-                <?php
-                }
-                ?>
+
+                ?></td>
                 <td scope="row"><?php echo $alamat_siswa ?></td>
                 
                 
@@ -310,8 +263,8 @@ $kelas = mysqli_query($koneksi, "SELECT * FROM kelas");
                 
 
                 <td scope="row">
-                  <a href="siswa.php?op=edit&id=<?php echo $id ?>"><button type="button" class="btn btn-danger">Edit</button></a>
-                  <a href="siswa.php?op=delete&id=<?php echo $id ?>" onclick="return confirm('Yakin mau hapus data?')"><button type="button" class="btn btn-danger">Hapus</button></a>
+                  <a href="siswa.php?op=edit&id_siswa=<?php echo $id_siswa ?>"><button type="button" class="btn btn-danger">Edit</button></a>
+                  <a href="siswa.php?op=delete&id_siswa=<?php echo $id_siswa ?>" onclick="return confirm('Yakin mau hapus data?')"><button type="button" class="btn btn-danger">Hapus</button></a>
                 </td>
               </tr>
             <?php
