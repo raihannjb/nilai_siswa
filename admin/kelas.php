@@ -241,19 +241,7 @@ if (empty($_SESSION['username']) or empty($_SESSION['level'])) {
                 <th scope="row"><?php echo $urut++ ?></th>
                 <td scope="row"><?php echo $kode_kelas ?></td>
                 <td scope="row"><?php echo $nama_kelas ?></td>
-
-                <?php
-                $sql2   = "select nama from guru";
-                $q2     = mysqli_query($koneksi, $sql2);
-                $urut   = 1;
-                while ($r2 = mysqli_fetch_array($q2)) {
-                  $guru                 = $r2['nama'];
-
-                ?>
-                  <td scope="row"><?php echo $guru ?></td>
-                <?php
-                }
-                ?>
+                <td scope="row"><?php echo "nama" ?></td>
 
                 <td scope="row">
                   <a href="kelas.php?op=edit&id=<?php echo $id ?>"><button type="button" class="btn btn-danger">Edit</button></a>
